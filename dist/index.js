@@ -117,87 +117,74 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"redditapi.js":[function(require,module,exports) {
-"use strict";
+})({"C:/Users/Admin1/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _default = {
-  search: function search(searchTerm, searchLimit, sortBy) {
-    // console.log("search....");
-    //return (
-    // fetch(
-    // `http://www.reddit.com/r/pics/.json?jsonp=${searchTerm}&sort=${sortBy}&limit=${searchLimit}`
-    //)
-    return fetch("http://www.reddit.com/search.json?q=".concat(searchTerm, "&sort=").concat(sortBy, "&limit=").concat(searchLimit)).then(function (res) {
-      return res.json();
-    }).then(function (data) {
-      return data.data.children.map(function (data) {
-        return data.data;
-      });
-    }).catch(function (err) {
-      return console.log(err);
-    }); //);
-  }
-};
-exports.default = _default;
-},{}],"index.js":[function(require,module,exports) {
-"use strict";
-
-var _redditapi = _interopRequireDefault(require("./redditapi"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var searchForm = document.getElementById("search-form");
-var searchInput = document.getElementById("search-input");
-searchForm.addEventListener("submit", function (e) {
-  var searchTerm = searchInput.value;
-  console.log(searchTerm);
-  var sortBy = document.querySelector('input[name="sortby"]:checked').value;
-  console.log(sortBy);
-  var searchLimit = document.getElementById("limit").value;
-  console.log(searchLimit);
-
-  if (searchTerm === "") {
-    showMessage("Please add a search term", " alert - danger");
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
   }
 
-  searchInput.value = "";
-
-  _redditapi.default.search(searchTerm, searchLimit, sortBy).then(function (results) {
-    console.log(results);
-    var output = '<div class="card-columns">';
-    results.forEach(function (post) {
-      var image = post.preview ? post.preview.images[0].source.url : "https://cdn.comparitech.com/wp-content/uploads/2017/08/reddit-1.jpg";
-      output += "\n        <div class =\"card\" >\n        <img class=\"card-img-top\" src=\"".concat(image, "\" alt=\"Card image cap\">\n        <div class =\"card-body\">\n        <h5 class=\"card-title\">").concat(post.title, "</h5>\n        <p class=\"card=text\">").concat(truncateString(post.selftext, 100), "</p>\n        <a href =\"").concat(post.url, "\" target=\"_ blank\" class =\"btn btn-primary\">Read more</a>\n        <hr>\n        <span class =\"badge badge-secondary\">Subreddit: ").concat(post.subreddit, "</span>\n        \n        </div>\n        </div>\n        ");
-    });
-    output += "</div>";
-    document.getElementById("results").innerHTML = output;
-  });
-
-  e.preventDefault();
-});
-
-function showMessage(message, className) {
-  var div = document.createElement("div");
-  div.className = "alert ".concat(className);
-  div.appendChild(document.createTextNode(message));
-  var searchContainer = document.getElementById("search-container");
-  var search = document.getElementById("search");
-  searchContainer.insertBefore(div, search);
-  setTimeout(function () {
-    document.querySelector(".alert").remove();
-  }, 3000);
+  return bundleURL;
 }
 
-function truncateString(myString, limit) {
-  var shortened = myString.indexOf(" ", limit);
-  if (shortened == -1) return myString;
-  return myString.substring(0, shortened);
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
 }
-},{"./redditapi":"redditapi.js"}],"C:/Users/Admin1/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"C:/Users/Admin1/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"C:/Users/Admin1/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"C:/Users/Admin1/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -401,5 +388,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["C:/Users/Admin1/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/parcel%20project.e31bb0bc.js.map
+},{}]},{},["C:/Users/Admin1/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
+//# sourceMappingURL=/index.js.map

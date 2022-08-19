@@ -22,7 +22,7 @@ searchForm.addEventListener("submit", (e) => {
   redditapi.search(searchTerm, searchLimit, sortBy).then((results) => {
     console.log(results);
     let output = '<div class="card-columns">';
-    results.forEach((post) => {
+    results.forEach(function (post) {
       let image = post.preview
         ? post.preview.images[0].source.url
         : "https://cdn.comparitech.com/wp-content/uploads/2017/08/reddit-1.jpg";
