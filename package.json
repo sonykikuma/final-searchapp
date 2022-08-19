@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "parcel": "^2.7.0"
+  },
+  "name": "parcel-project",
+  "version": "1.0.0",
+  "description": "search app",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "abha soni",
+  "license": "MIT"
+}
