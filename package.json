@@ -3,12 +3,14 @@
     "parcel": "^2.7.0"
   },
   "name": "parcel-project",
+  "source": "src/index.html",
   "version": "1.0.0",
   "description": "search app",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel",
+    "build": "parcel build"
   },
   "author": "abha soni",
   "license": "MIT"
